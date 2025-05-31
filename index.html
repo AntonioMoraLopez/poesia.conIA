@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Poema Interactivo</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -32,7 +30,7 @@
       border-radius: 1rem;
       max-width: 80%;
       transition: opacity 1s;
-      opacity: 0;
+      opacity: 1;
       font-size: 1.8em;
     }
 
@@ -123,8 +121,11 @@
     const musica = document.getElementById("musica");
     const buttons = document.getElementById("buttons");
 
+    let iniciado = false;
+
     document.body.addEventListener("click", () => {
-      if (currentIndex === 0) {
+      if (!iniciado) {
+        iniciado = true;
         musica.play();
         mostrarVerso();
       }
@@ -132,25 +133,24 @@
 
     function mostrarVerso() {
       if (currentIndex < versos.length) {
+        const fondoIndex = Math.floor(currentIndex / 2) % fondoTotal;
+        document.body.style.backgroundImage = `url('fondo${fondoIndex}.jpg')`;
+
         contenido.style.opacity = 0;
         setTimeout(() => {
           contenido.textContent = versos[currentIndex];
-          const fondoIndex = Math.floor(currentIndex / 2) % fondoTotal;
-          document.body.style.backgroundImage = `url('fondo${fondoIndex}.jpg')`;
           contenido.style.opacity = 1;
           currentIndex++;
-          setTimeout(mostrarVerso, 6000); // Ajusta al ritmo de la música
+          setTimeout(mostrarVerso, 6000);
         }, 1000);
       } else {
         contenido.style.display = "none";
         finalScreen.style.display = "flex";
         buttons.style.display = "flex";
-        setTimeout(() => location.reload(), 15000); // Reinicia tras 15s en pantalla final
+        setTimeout(() => location.reload(), 15000);
       }
     }
   </script>
 
 </body>
 </html>
-
-
